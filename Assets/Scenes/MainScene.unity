@@ -265,6 +265,8 @@ MonoBehaviour:
   gridSize: {x: 100, y: 100}
   gridPos: {x: 0, y: 0, z: 0}
   debug: {fileID: 4388155708398325280}
+  freeMat: {fileID: 2100000, guid: 247c52eeeb8d2d24fb41fbe63fc42fa8, type: 2}
+  stuckMat: {fileID: 2100000, guid: 053d9b0d47b645540b6d42eec813242a, type: 2}
 --- !u!1 &676343095
 GameObject:
   m_ObjectHideFlags: 0
