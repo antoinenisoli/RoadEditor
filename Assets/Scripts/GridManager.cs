@@ -11,6 +11,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] Vector2Int gridSize;
     [SerializeField] Vector3Int gridPos;
     [SerializeField] Transform debug;
+    [SerializeField] Material freeMat, stuckMat;
     Camera mainCam;
     public int[,] map;
     Dictionary<Vector2Int, RoadTile> roadTiles = new Dictionary<Vector2Int, RoadTile>();
@@ -24,9 +25,17 @@ public class GridManager : MonoBehaviour
         mainCam = Camera.main;
     }
 
+    public RoadTile GetRoadTile(Vector2Int coordinates)
+    {
+        if (roadTiles.TryGetValue(coordinates, out RoadTile tile))
+            return tile;
+
+        return null;
+    }
+
     public void PlaceRoad(Vector3Int pos)
     {
-        Vector2Int coordinates = new Vector2Int(System.Math.Abs(pos.x), System.Math.Abs(pos.z));
+        Vector2Int coordinates = new Vector2Int(pos.x, pos.z);
         print(coordinates);
         if (map[coordinates.x, coordinates.y] == 1)
         {
@@ -44,7 +53,7 @@ public class GridManager : MonoBehaviour
 
     public void RemoveRoad(Vector3Int pos)
     {
-        Vector2Int coordinates = new Vector2Int(System.Math.Abs(pos.x), System.Math.Abs(pos.z));
+        Vector2Int coordinates = new Vector2Int(pos.x, pos.z);
         print(coordinates);
         if (map[coordinates.x, coordinates.y] == 0)
         {
@@ -68,10 +77,16 @@ public class GridManager : MonoBehaviour
             Vector3 mousePos = hit.point;
             gridPos = new Vector3Int(Mathf.RoundToInt(mousePos.x), 0, Mathf.RoundToInt(mousePos.z));
             debug.position = Vector3.Lerp(debug.position, gridPos, 50f * Time.deltaTime);
+            Vector2Int coordinates = new Vector2Int(gridPos.x, gridPos.z);
             if (Input.GetMouseButton(0))
                 PlaceRoad(gridPos);
             else if (Input.GetMouseButton(1))
                 RemoveRoad(gridPos);
+
+            if (map[coordinates.x, coordinates.y] == 0)
+                debug.GetComponentInChildren<MeshRenderer>().material = freeMat;
+            else if (map[coordinates.x, coordinates.y] == 1)
+                debug.GetComponentInChildren<MeshRenderer>().material = stuckMat;
         }
     }
 }
