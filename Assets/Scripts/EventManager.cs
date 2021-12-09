@@ -7,6 +7,9 @@ public class EventManager : MonoBehaviour
 {
     public static EventManager Instance;
     public UnityEvent onNewRoad = new UnityEvent();
+    public class MeshEvent : UnityEvent<Mesh> { }
+
+    public MeshEvent onButtonSelection = new MeshEvent();
 
     private void Awake()
     {
