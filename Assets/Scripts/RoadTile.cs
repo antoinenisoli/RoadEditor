@@ -7,12 +7,23 @@ public class RoadTile : MonoBehaviour
 {
     [SerializeField] Transform visual;
     public Vector2Int coordinates;
+    MeshFilter meshFilter;
+
+    private void Awake()
+    {
+        meshFilter = GetComponentInChildren<MeshFilter>();
+    }
 
     public void Create(Vector2Int coordinates)
     {
         this.coordinates = coordinates;
         visual.localScale = Vector3.one * 0.01f;
         visual.DOScale(Vector3.one, 0.3f);
+    }
+
+    public void SetMesh(Mesh newMesh)
+    {
+        meshFilter.mesh = newMesh;
     }
 
     public void Death()

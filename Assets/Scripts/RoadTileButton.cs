@@ -18,7 +18,6 @@ public class RoadTileButton : MonoBehaviour
     {
         mainImage = GetComponent<Image>();
         Texture2D texture = AssetPreview.GetAssetPreview(roadPrefab.gameObject);
-        //print(texture);
         if (texture)
         {
             Sprite spr = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), transform.position);
@@ -28,7 +27,7 @@ public class RoadTileButton : MonoBehaviour
 
     public void SelectMe()
     {
-        EventManager.Instance.onButtonSelection.Invoke(roadPrefab.GetComponentInChildren<MeshFilter>().mesh);
+        EventManager.Instance.onButtonSelection.Invoke(roadPrefab.GetComponentInChildren<MeshFilter>().sharedMesh);
     }
 
     public void SetRoadTile(Mesh g)

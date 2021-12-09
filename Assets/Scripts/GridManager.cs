@@ -7,11 +7,12 @@ using UnityEngine.EventSystems;
 public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
+    public Mesh CurrentTileMesh { get; set; }
 
     [SerializeField] GameObject roadPrefab;
     [SerializeField] Vector2Int gridSize;
     [SerializeField] Vector3Int gridPos;
-    [SerializeField] Transform debug;
+    [SerializeField] Transform roadPreview;
     [SerializeField] Material freeMat, stuckMat;
     Camera mainCam;
     public int[,] map;
@@ -22,6 +23,7 @@ public class GridManager : MonoBehaviour
         if (!Instance)
             Instance = this;
 
+        CurrentTileMesh = roadPrefab.GetComponentInChildren<MeshFilter>().sharedMesh;
         map = new int[gridSize.x, gridSize.y];
         mainCam = Camera.main;
     }
@@ -49,6 +51,7 @@ public class GridManager : MonoBehaviour
         GameObject newRoad = Instantiate(roadPrefab, pos, Quaternion.identity);
         RoadTile tile = newRoad.GetComponent<RoadTile>();
         tile.Create(coordinates);
+        tile.SetMesh(CurrentTileMesh);
         roadTiles.Add(coordinates, tile);
         EventManager.Instance.onNewRoad.Invoke();
     }
@@ -85,16 +88,36 @@ public class GridManager : MonoBehaviour
         if (InRange(coordinates.x, coordinates.y))
         {
             if (map[coordinates.x, coordinates.y] == 0)
-                debug.GetComponentInChildren<MeshRenderer>().material = freeMat;
+                roadPreview.GetComponentInChildren<MeshRenderer>().material = freeMat;
             else if (map[coordinates.x, coordinates.y] == 1)
-                debug.GetComponentInChildren<MeshRenderer>().material = stuckMat;
+                roadPreview.GetComponentInChildren<MeshRenderer>().material = stuckMat;
+        }
+    }
+
+    public void LoadMap(int[,] map)
+    {
+        this.map = map;
+        roadTiles.Clear();
+        for (int x = 0; x < map.GetLength(0); x++)
+        {
+            for (int y = 0; y < map.GetLength(1); y++)
+            {
+                Vector2Int coordinates = new Vector2Int(x, y);
+                Vector3 worldPos = new Vector3(coordinates.x, 0, coordinates.y);
+                GameObject newRoad = Instantiate(roadPrefab, worldPos, Quaternion.identity);
+                RoadTile tile = newRoad.GetComponent<RoadTile>();
+                tile.Create(coordinates);
+                tile.SetMesh(CurrentTileMesh);
+                roadTiles.Add(coordinates, tile);
+                EventManager.Instance.onNewRoad.Invoke();
+            }
         }
     }
 
     public void SetTile(Mesh newMesh)
     {
-        RoadTile tileScript = roadPrefab.GetComponent<RoadTile>();
-        //til = newMesh;
+        CurrentTileMesh = newMesh;
+        roadPreview.GetComponentInChildren<MeshFilter>().sharedMesh = newMesh;
     }
 
     private void Update()
@@ -107,7 +130,7 @@ public class GridManager : MonoBehaviour
         {
             Vector3 mousePos = hit.point;
             gridPos = new Vector3Int(Mathf.RoundToInt(mousePos.x), 0, Mathf.RoundToInt(mousePos.z));
-            debug.position = Vector3.Lerp(debug.position, gridPos, 50f * Time.deltaTime);
+            roadPreview.position = Vector3.Lerp(roadPreview.position, gridPos, 50f * Time.deltaTime);
             Vector2Int coordinates = new Vector2Int(gridPos.x, gridPos.z);
             if (Input.GetMouseButton(0))
                 PlaceRoad(gridPos);
