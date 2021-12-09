@@ -14,6 +14,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] Vector3Int gridPos;
     [SerializeField] Transform roadPreview;
     [SerializeField] Material freeMat, stuckMat;
+
+    Vector3 currentRotation;
     Camera mainCam;
     public int[,] map;
     public Dictionary<Vector2Int, RoadTile> roadTiles = new Dictionary<Vector2Int, RoadTile>();
@@ -144,6 +146,15 @@ public class GridManager : MonoBehaviour
                 RemoveRoad(gridPos);
 
             ShowDebug(coordinates);
+
+            float scrollWheel = Input.GetAxisRaw("Mouse ScrollWheel");
+            if (scrollWheel != 0)
+            {
+                print(scrollWheel);
+                currentRotation += Vector3.up * (90 * scrollWheel * 10);
+                roadPreview.GetChild(0).DOKill();
+                roadPreview.GetChild(0).DORotate(currentRotation, 0.2f);
+            }
         }
     }
 }
