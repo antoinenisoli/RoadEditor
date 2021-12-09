@@ -10,13 +10,13 @@ public class GridManager : MonoBehaviour
     public Mesh CurrentTileMesh { get; set; }
 
     [SerializeField] GameObject roadPrefab;
-    [SerializeField] Vector2Int gridSize;
+    public Vector2Int gridSize;
     [SerializeField] Vector3Int gridPos;
     [SerializeField] Transform roadPreview;
     [SerializeField] Material freeMat, stuckMat;
     Camera mainCam;
     public int[,] map;
-    Dictionary<Vector2Int, RoadTile> roadTiles = new Dictionary<Vector2Int, RoadTile>();
+    public Dictionary<Vector2Int, RoadTile> roadTiles = new Dictionary<Vector2Int, RoadTile>();
 
     private void Awake()
     {
@@ -54,6 +54,7 @@ public class GridManager : MonoBehaviour
         tile.SetMesh(CurrentTileMesh);
         roadTiles.Add(coordinates, tile);
         EventManager.Instance.onNewRoad.Invoke();
+        GameManager.instance.CheckNeighboors(coordinates);
     }
 
     public void RemoveRoad(Vector3Int pos)
