@@ -77,6 +77,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tabWidth: 2000
   _tabHeight: 2000
+  _neightboorTop: {fileID: 5006720080491887505, guid: 6e50b35d0191f8d42b41f87394da5e60, type: 3}
+  _neightboorTopBottomLeftRight: {fileID: 2634167684899967581, guid: d1dfa2013c3351843ae3c0724f7f135a, type: 3}
+  _neightboorBottomTopRight: {fileID: -4603950910259808982, guid: 3f8219fb5dbe0354294ad156cd0ae89a, type: 3}
+  _neightboorTopDown: {fileID: -704474570306944126, guid: e91dd937b8badb24dab7749fa812c8bb, type: 3}
 --- !u!1 &7513427328545185881
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +137,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7513427328545185881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25012e7865a1e29499b2db63d0ddd02d, type: 3}
+  m_Script: {fileID: 11500000, guid: 036b11aa89606c048b1add550c808498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onNewRoad:
+    m_PersistentCalls:
+      m_Calls: []

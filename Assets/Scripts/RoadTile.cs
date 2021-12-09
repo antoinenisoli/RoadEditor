@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RoadTile : MonoBehaviour
 {
-    [SerializeField] Transform visual;
+    [SerializeField]public Transform visual;
     public Vector2Int coordinates;
 
     public void Create(Vector2Int coordinates)
