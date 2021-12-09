@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject selectionButton;
     [SerializeField] Transform content;
+    public TextAsset savedMap;
     [SerializeField] GameObject[] tilePrefabs;
 
     private void Awake()

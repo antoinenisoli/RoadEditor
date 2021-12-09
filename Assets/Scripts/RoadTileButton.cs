@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RoadTileButton : MonoBehaviour
+public class RoadTileButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject roadPrefab;
     Image mainImage;
+    Vector3 baseScale;
 
     private void Start()
     {
+        baseScale = transform.localScale;
         EventManager.Instance.onButtonSelection.AddListener(SetRoadTile);
     }
 
@@ -33,5 +37,15 @@ public class RoadTileButton : MonoBehaviour
     public void SetRoadTile(Mesh g)
     {
         GridManager.Instance.SetTile(g);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        transform.DOScale(baseScale * 1.15f, 0.15f);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        transform.DOScale(baseScale, 0.15f);
     }
 }

@@ -115,6 +115,11 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public void SaveMap()
+    {
+
+    }
+
     public void SetTile(Mesh newMesh)
     {
         CurrentTileMesh = newMesh;

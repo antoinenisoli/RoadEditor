@@ -540,6 +540,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 489110646}
   m_CullTransparentMesh: 1
+--- !u!1 &500952093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 500952093, guid: c7c23fe737b50a14482ad190f1ad13e1, type: 3}
+  m_PrefabInstance: {fileID: 6197115281710092581}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,7 +720,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 778846766}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 500952093}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &778846766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1669,7 +1686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3905251461193111785, guid: c7c23fe737b50a14482ad190f1ad13e1, type: 3}
       propertyPath: m_Name
-      value: _scripts
+      value: _Scripts
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7c23fe737b50a14482ad190f1ad13e1, type: 3}
