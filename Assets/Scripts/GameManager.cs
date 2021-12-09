@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _tileGrid = new int[_tabWidth, _tabHeight];
+        _isNeighboors = new bool[_neightborhoodSize, _neightborhoodSize];
     }
 
     // Update is called once per frame
@@ -60,40 +60,40 @@ public class GameManager : MonoBehaviour
         {
             for (j = 0; j <= _neightborhoodSize; j++)
             {
-                if (GridManager.Instance.map[i + coordinate.x - 1, j + coordinate.y - 1] == 1)
-                    _isNeighboors[i, j] = true;
+                if(i + coordinate.x - 1 > 0 && i + coordinate.x - 1 < GridManager.Instance.gridSize.x && j + coordinate.y - 1 > 0 && j + coordinate.y - 1 < GridManager.Instance.gridSize.y)
+                    if (GridManager.Instance.map[i + coordinate.x - 1, j + coordinate.y - 1] == 1)
+                        _isNeighboors[i, j] = true;
             }
         }
-        bool top = _isNeighboors[0,0];
-        bool down = _isNeighboors[0, 2];
+        bool top = _isNeighboors[0,1];
+        bool down = _isNeighboors[2, 1];
         bool right = _isNeighboors[1, 2];
         bool left = _isNeighboors[1, 0];
-        RoadTile roadTile = null;
-        if(top && !down && !right && !left)
+        RoadTile roadTile = GridManager.Instance.roadTiles[coordinate];
+        MeshFilter meshFilter = roadTile.GetComponentInChildren<MeshFilter>();
+        if (top && !down && !right && !left)
         {
-            roadTile = GridManager.Instance.roadTiles[coordinate];
-            roadTile.GetComponent<MeshFilter>().mesh = _neightboorTop;
+            meshFilter.mesh = _neightboorTop;
         }
         if (!top && down && !right && !left)
         {
-            roadTile = GridManager.Instance.roadTiles[coordinate];
-            roadTile.GetComponent<MeshFilter>().mesh = _neightboorTop;
+
+            meshFilter.mesh = _neightboorTop;
             roadTile.visual.DORotate(new Vector3(0, 180, 0), 1f);
         }
         if (!top && !down && right && !left)
         {
-            roadTile = GridManager.Instance.roadTiles[coordinate];
-            roadTile.GetComponent<MeshFilter>().mesh = _neightboorTop;
+
+            meshFilter.mesh = _neightboorTop;
             roadTile.visual.DORotate(new Vector3(0, 90, 0), 1f);
         }
         if (!top && !down && !right && left)
         {
-            roadTile = GridManager.Instance.roadTiles[coordinate];
-            roadTile.GetComponent<MeshFilter>().mesh = _neightboorTop;
+
+            meshFilter.mesh = _neightboorTop;
             roadTile.visual.DORotate(new Vector3(0, -90, 0), 1f);
         }
 
-        Debug.Log(top);
     }
     private void InitiateNeighborhood()
     {
