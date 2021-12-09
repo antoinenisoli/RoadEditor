@@ -14,7 +14,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] Material freeMat, stuckMat;
     Camera mainCam;
     public int[,] map;
-    Dictionary<Vector2Int, RoadTile> roadTiles = new Dictionary<Vector2Int, RoadTile>();
+    public Dictionary<Vector2Int, RoadTile> roadTiles = new Dictionary<Vector2Int, RoadTile>();
 
     private void Awake()
     {
@@ -36,10 +36,10 @@ public class GridManager : MonoBehaviour
     public void PlaceRoad(Vector3Int pos)
     {
         Vector2Int coordinates = new Vector2Int(pos.x, pos.z);
-        print(coordinates);
+        //print(coordinates);
         if (map[coordinates.x, coordinates.y] == 1)
         {
-            print("already a road here ");
+            //print("already a road here ");
             return;
         }
 
@@ -49,6 +49,8 @@ public class GridManager : MonoBehaviour
         tile.Create(coordinates);
         roadTiles.Add(coordinates, tile);
         EventManager.Instance.onNewRoad.Invoke();
+
+        GameManager.instance.CheckNeighboors(coordinates);
     }
 
     public void RemoveRoad(Vector3Int pos)
@@ -83,10 +85,10 @@ public class GridManager : MonoBehaviour
             else if (Input.GetMouseButton(1))
                 RemoveRoad(gridPos);
 
-            if (map[coordinates.x, coordinates.y] == 0)
+            /*if (map[coordinates.x, coordinates.y] == 0)
                 debug.GetComponentInChildren<MeshRenderer>().material = freeMat;
             else if (map[coordinates.x, coordinates.y] == 1)
-                debug.GetComponentInChildren<MeshRenderer>().material = stuckMat;
+                debug.GetComponentInChildren<MeshRenderer>().material = stuckMat;*/
         }
     }
 }
