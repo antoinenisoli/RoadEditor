@@ -8,7 +8,7 @@ public class GridManager : MonoBehaviour
     public static GridManager Instance;
 
     [SerializeField] GameObject roadPrefab;
-    [SerializeField] Vector2Int gridSize;
+    [SerializeField] public Vector2Int gridSize;
     [SerializeField] Vector3Int gridPos;
     [SerializeField] Transform debug;
     [SerializeField] Material freeMat, stuckMat;
@@ -48,7 +48,7 @@ public class GridManager : MonoBehaviour
         RoadTile tile = newRoad.GetComponent<RoadTile>();
         tile.Create(coordinates);
         roadTiles.Add(coordinates, tile);
-        EventManager.Instance.onNewRoad.Invoke();
+        //EventManager.Instance.onNewRoad.Invoke();
 
         GameManager.instance.CheckNeighboors(coordinates);
     }
