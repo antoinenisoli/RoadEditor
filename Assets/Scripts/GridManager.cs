@@ -108,6 +108,7 @@ public class GridManager : MonoBehaviour
                 Vector2Int coordinates = new Vector2Int(x, y);
                 Vector3 worldPos = new Vector3(coordinates.x, 0, coordinates.y);
                 GameObject newRoad = Instantiate(roadPrefab, worldPos, Quaternion.identity);
+                newRoad.transform.GetChild(0).rotation = Quaternion.Euler(currentRotation);
                 RoadTile tile = newRoad.GetComponent<RoadTile>();
                 tile.Create(coordinates);
                 tile.SetMesh(CurrentTileMesh);
@@ -128,11 +129,15 @@ public class GridManager : MonoBehaviour
         roadPreview.GetComponentInChildren<MeshFilter>().sharedMesh = newMesh;
     }
 
-    private void Update()
+    void ManageRotation()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+        float scrollWheel = Input.GetAxisRaw("Mouse ScrollWheel");
+        if (scrollWheel != 0)
+            currentRotation += Vector3.up * (90 * (scrollWheel * 10));
+    }
 
+    void ManageTiles()
+    {
         Ray screenRay = mainCam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(screenRay, out RaycastHit hit))
         {
@@ -140,21 +145,24 @@ public class GridManager : MonoBehaviour
             gridPos = new Vector3Int(Mathf.RoundToInt(mousePos.x), 0, Mathf.RoundToInt(mousePos.z));
             roadPreview.position = Vector3.Lerp(roadPreview.position, gridPos, 50f * Time.deltaTime);
             Vector2Int coordinates = new Vector2Int(gridPos.x, gridPos.z);
+
             if (Input.GetMouseButton(0))
                 PlaceRoad(gridPos);
             else if (Input.GetMouseButton(1))
                 RemoveRoad(gridPos);
 
             ShowDebug(coordinates);
-
-            float scrollWheel = Input.GetAxisRaw("Mouse ScrollWheel");
-            if (scrollWheel != 0)
-            {
-                print(scrollWheel);
-                currentRotation += Vector3.up * (90 * scrollWheel * 10);
-                roadPreview.GetChild(0).DOKill();
-                roadPreview.GetChild(0).DORotate(currentRotation, 0.2f);
-            }
+            ManageRotation();
+            Quaternion rot = Quaternion.Euler(currentRotation);
+            roadPreview.GetChild(0).rotation = Quaternion.Slerp(roadPreview.GetChild(0).rotation, rot, 25f * Time.deltaTime);
         }
+    }
+
+    private void Update()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        ManageTiles();
     }
 }
